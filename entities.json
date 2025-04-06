@@ -1,36 +1,13 @@
 {
     "entities": [
         {
-            "type": "object",
+            "type": "model",
             "position": {
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
-            "mesh": {
-                "type": "box",
-                "color": "#ff00ff"
-            },
-            "movement": {
-                "speed": {
-                    "x": 0.1,
-                    "y": 0,
-                    "z": 0
-                }
-            }
-        },
-        {
-            "type": "light",
-            "position": {
-                "x": 0,
-                "y": 1,
-                "z": 0
-            },
-            "light": {
-                "type": "PointLight",
-                "color": "#ffffff",
-                "intensity": 1
-            }
+            "src": "models/griffindor.glb"
         },
         {
             "type": "light",
@@ -38,6 +15,14 @@
                 "type": "AmbientLight",
                 "color": "#ffffff",
                 "intensity": 1
+            }
+        },
+        {
+            "type": "light",
+            "light": {
+                "type": "HemisphereLight",
+                "skyColor": "#a9d4ff",
+                "groundColor": "#ffecec"
             }
         }
     ]

@@ -3,9 +3,11 @@
      overflow: hidden;
  }
 
- html,
- body {
-     margin: 0 !important;
-     padding: 0 !important;
-     overflow: hidden;
- }
+html,
+body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden;
+    height: 100%;
+    background: linear-gradient(135deg, #6e7aef, #9b79ec, #d84fdb);
+}

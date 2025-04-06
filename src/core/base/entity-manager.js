@@ -32,20 +32,11 @@ export class EntityManager {
     }
 
     getEntitiesWithComponents(...componentTypes) {
-
-        if (componentTypes.length === 0) {
-            return [];
-        }
-
         const sets = componentTypes.map(type => this.componentsByType.get(type));
 
-        if (sets.some(set => !set)) {
-            return [];
-        }
+        if (sets.includes(undefined)) return [];
 
-        const entityIds = [...sets[0].keys()];
-
-        return entityIds.filter(id =>
+        return [...sets[0].keys()].filter(id =>
             sets.every(set => set.has(id))
         );
     }
