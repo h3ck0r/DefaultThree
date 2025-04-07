@@ -2,12 +2,16 @@
     "entities": [
         {
             "type": "model",
+            "ignored": true,
             "position": {
                 "x": 0,
                 "y": 0,
                 "z": 0
             },
-            "src": "models/griffindor.glb"
+            "receiveShadow": true,
+            "castShadow": true,
+            "src": "./models/griffindorOpt.glb",
+            "textureCompression": "ktx2"
         },
         {
             "type": "light",
@@ -19,10 +23,61 @@
         },
         {
             "type": "light",
+            "ignored": true,
+            "light": {
+                "type": "PointLight",
+                "color": "#ff0000",
+                "intensity": 10
+            },
+            "position": {
+                "x": 0,
+                "y": 1,
+                "z": 0
+            }
+        },
+        {
+            "type": "mesh",
+            "mesh": {
+                "type": "BoxGeometry",
+                "color": "#ffff00"
+            }
+        },
+        {
+            "type": "light",
+            "ignored": true,
             "light": {
                 "type": "HemisphereLight",
                 "skyColor": "#a9d4ff",
                 "groundColor": "#ffecec"
+            }
+        },
+        {
+            "type": "light",
+            "ignored": true,
+            "label": "Fireplace Light",
+            "light": {
+                "type": "DirectionalLight",
+                "castShadow": true,
+                "position": {
+                    "x": -1.12,
+                    "y": 0.38,
+                    "z": -2
+                },
+                "target": {
+                    "x": -1,
+                    "y": 0.5,
+                    "z": -0.51
+                },
+                "color": "#ffab57",
+                "intensity": 5,
+                "width": 1024,
+                "height": 1024,
+                "near": 0.5,
+                "far": 10,
+                "left": -2,
+                "right": 2,
+                "top": 2,
+                "bottom": -2
             }
         }
     ]

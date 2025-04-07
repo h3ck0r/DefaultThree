@@ -1,10 +1,14 @@
 import * as THREE from "three";
 
 import { InputComponent } from "../components/input-component";
+import { CameraComponent } from "../components/core-components";
 
 export class FPSMovementSystem {
-    constructor(camera, clock) {
-        this.camera = camera;
+    constructor(em, clock) {
+        const cameraEntity = em.getEntityWithComponent(CameraComponent);
+        const cameraComponent = em.getComponent(cameraEntity, CameraComponent);
+
+        this.camera = cameraComponent.camera;
         this.clock = clock;
     }
 
