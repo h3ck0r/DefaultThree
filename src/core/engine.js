@@ -9,6 +9,7 @@ import { loadEntitiesFromJSON } from '../utils/entity-loader';
 import { InputSystem } from './systems/input-system';
 import { FPSMovementSystem } from './systems/fps-movement-system';
 import { InputComponent } from './components/input-component';
+import { ShaderSystem } from './systems/shader-system';
 import { CameraComponent, RendererComponent, SceneComponent } from './components/core-components';
 import { UISystem } from './systems/ui-system';
 
@@ -17,7 +18,6 @@ export class Engine {
     constructor() {
         this.scene = new THREE.Scene();
         this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.position.y = 1;
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -70,6 +70,7 @@ export class Engine {
         this.em.addComponent(this.em.createEntity(), new InputComponent());
 
         this.uiSystem = new UISystem(this.em);
+        this.shaderSystem = new ShaderSystem(this.em);
         
         this.renderer.setAnimationLoop(this.animate);
     }

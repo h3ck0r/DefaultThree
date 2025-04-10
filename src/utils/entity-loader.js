@@ -5,10 +5,11 @@ import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.j
 
 import { LightComponent } from '../core/components/light-components';
 import { MeshComponent } from '../core/components/mesh-component';
+import { ShaderComponent } from '../core/components/shader-component';
 import { TransformComponent } from '../core/components/transform-component';
 import { DirectionalLightComponent, PointLightComponent, AmbientLightComponent, HemisphereLightComponent } from '../core/components/light-components';
 
-function createMeshEntity(entityData, em) {
+async function createMeshEntity(entityData, em) {
     let geometry = null;
     let material = null;
     let mesh = null;
@@ -16,10 +17,26 @@ function createMeshEntity(entityData, em) {
     if (entityData.mesh.type === "BoxGeometry") {
         geometry = new THREE.BoxGeometry();
         material = new THREE.MeshStandardMaterial({ color: new THREE.Color(entityData.mesh.color) });
-        mesh = new THREE.Mesh(geometry, material);
     }
+    if (entityData.rawShaderMaterial) {
+        const vertexUrl = entityData.rawShaderMaterial.vertexShader;
+        const fragmentUrl = entityData.rawShaderMaterial.fragmentShader;
 
+        const [vertexShader, fragmentShader] = await Promise.all([
+            loadShader(vertexUrl),
+            loadShader(fragmentUrl),
+        ]);
+
+        material = new THREE.RawShaderMaterial({
+            vertexShader,
+            fragmentShader,
+        });
+    }
+    const meshPos = entityData.position;
+    mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(meshPos.x, meshPos.y, meshPos.z);
     em.addComponent(entityData.entity, new MeshComponent(mesh));
+    em.addComponent(entityData.entity, new ShaderComponent(material));
     em.addComponent(entityData.entity, new TransformComponent(entityData.position));
 }
 
@@ -51,10 +68,10 @@ function createLightEntity(entityData, em) {
             light.shadow.mapSize.height = entityData.light.height;
             light.shadow.camera.near = entityData.light.near;
             light.shadow.camera.far = entityData.light.far;
-            light.shadow.camera.left =  entityData.light.left;
+            light.shadow.camera.left = entityData.light.left;
             light.shadow.camera.right = entityData.light.right;
             light.shadow.camera.top = entityData.light.top;
-            light.shadow.camera.bottom =  entityData.light.bottom;
+            light.shadow.camera.bottom = entityData.light.bottom;
             light.shadow.camera.updateProjectionMatrix();
         }
 
@@ -104,8 +121,8 @@ async function createModelEntity(entityData, renderer, em) {
 }
 
 export async function loadEntitiesFromJSON(jsonData, renderer, em) {
-    jsonData.entities.forEach((entityData) => {
-        if(entityData.ignored){
+    await jsonData.entities.forEach((entityData) => {
+        if (entityData.ignored) {
             return;
         }
         const entity = em.createEntity();
@@ -117,4 +134,9 @@ export async function loadEntitiesFromJSON(jsonData, renderer, em) {
             createModelEntity({ entity, ...entityData }, renderer, em);
         }
     });
+}
+async function loadShader(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error(`Failed to load shader: ${url}`);
+    return await response.text();
 }

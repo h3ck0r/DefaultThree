@@ -14,6 +14,22 @@
             "textureCompression": "ktx2"
         },
         {
+            "type": "mesh",
+            "rawShaderMaterial": {
+                "vertexShader":"./shaders/cubeVertShader.glsl",
+                "fragmentShader":"./shaders/cubeFragShader.glsl"
+            },
+            "position": {
+                "x": 0,
+                "y": 0,
+                "z": -2
+            },
+            "mesh": {
+                "type": "BoxGeometry",
+                "color": "#32a852"
+            }
+        },
+        {
             "type": "light",
             "light": {
                 "type": "AmbientLight",
@@ -33,13 +49,6 @@
                 "x": 0,
                 "y": 1,
                 "z": 0
-            }
-        },
-        {
-            "type": "mesh",
-            "mesh": {
-                "type": "BoxGeometry",
-                "color": "#ffff00"
             }
         },
         {

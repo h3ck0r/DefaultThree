@@ -12,6 +12,10 @@
   "dependencies": {
     "three": "^0.175.0",
     "tweakpane": "^4.0.5",
-    "vite": "^6.2.5"
+    "vite": "^6.2.5",
+    "vite-plugin-restart": "^0.4.2"
+  },
+  "devDependencies": {
+    "vite-plugin-glsl": "^1.4.0"
   }
 }
