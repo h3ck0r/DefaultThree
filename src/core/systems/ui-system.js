@@ -3,22 +3,19 @@ import { DirectionalLightHelper } from 'three';
 import Stats from 'three/examples/jsm/libs/stats.module'
 
 import { ActiveUIComponent } from '../components/ui-component';
-import { CameraComponent, SceneComponent } from "../components/core-components";
+import { CameraComponent, SceneComponent, ClockComponent, RendererComponent, EngineComponent } from "../components/core-components";
 import { DirectionalLightComponent } from '../components/light-components';
 
 export class UISystem {
     constructor(em) {
-        const cameraEntity = em.getEntityWithComponent(CameraComponent);
-        const cameraComponent = em.getComponent(cameraEntity, CameraComponent);
-
-        const sceneEntity = em.getEntityWithComponent(SceneComponent);
-        const sceneComponent = em.getComponent(sceneEntity, SceneComponent);
+        const cameraComponent = em.getFistComponent(CameraComponent);
+        const sceneComponent = em.getFistComponent(SceneComponent);
+        const engineComponent = em.getFistComponent(EngineComponent)
 
         this.scene = sceneComponent.scene;
         this.camera = cameraComponent.camera;
+        if (engineComponent.engine.isDebug) {
 
-        this.isDebug = location.hash.indexOf('debug') !== -1;
-        if (this.isDebug) {
             this.setupTweakPane();
             const stats = Stats();
             document.body.appendChild(stats.dom)
@@ -30,7 +27,7 @@ export class UISystem {
                 const helper = new DirectionalLightHelper(directionalLightComponent.light, 1);
                 this.scene.add(helper);
             }
-            
+
         }
     }
 

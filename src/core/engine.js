@@ -10,7 +10,7 @@ import { InputSystem } from './systems/input-system';
 import { FPSMovementSystem } from './systems/fps-movement-system';
 import { InputComponent } from './components/input-component';
 import { ShaderSystem } from './systems/shader-system';
-import { CameraComponent, RendererComponent, SceneComponent } from './components/core-components';
+import { CameraComponent, RendererComponent, SceneComponent, ClockComponent, EngineComponent } from './components/core-components';
 import { UISystem } from './systems/ui-system';
 
 
@@ -21,7 +21,7 @@ export class Engine {
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
         this.renderer.setPixelRatio(window.devicePixelRatio);
-        this.renderer.setClearColor(0x000000, 0);
+        this.renderer.setClearColor(0xffffff, 1);
         this.renderer.shadowMap.enabled = true;
 
         this.clock = new THREE.Clock();
@@ -34,9 +34,18 @@ export class Engine {
 
         this.em = new EntityManager();
 
+        this.isDebug = location.hash.indexOf('debug') !== -1;
+        if (this.isDebug) {
+            this.debugClock = new THREE.Clock();
+            this.debugClock.start();
+            this.em.addComponent(this.em.createEntity(), new ClockComponent(this.debugClock, "DebugClock"));
+        }
+
         this.em.addComponent(this.em.createEntity(), new CameraComponent(this.camera));
+        this.em.addComponent(this.em.createEntity(), new ClockComponent(this.clock, "MainClock"));
         this.em.addComponent(this.em.createEntity(), new RendererComponent(this.renderer));
         this.em.addComponent(this.em.createEntity(), new SceneComponent(this.scene));
+        this.em.addComponent(this.em.createEntity(), new EngineComponent(this));
 
         this.renderSystem = new RenderSystem(this.scene);
         this.movementSystem = new MovementSystem();
@@ -63,15 +72,16 @@ export class Engine {
     }
 
     async init() {
+        this.uiSystem = new UISystem(this.em);
+
         await fetch("entities.json")
             .then((response) => response.json())
             .then((jsonData) => loadEntitiesFromJSON(jsonData, this.renderer, this.em));
 
         this.em.addComponent(this.em.createEntity(), new InputComponent());
 
-        this.uiSystem = new UISystem(this.em);
         this.shaderSystem = new ShaderSystem(this.em);
-        
+
         this.renderer.setAnimationLoop(this.animate);
     }
 

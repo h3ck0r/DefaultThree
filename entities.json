@@ -2,7 +2,7 @@
     "entities": [
         {
             "type": "model",
-            "ignored": true,
+            "ignored": false,
             "position": {
                 "x": 0,
                 "y": 0,
@@ -10,11 +10,12 @@
             },
             "receiveShadow": true,
             "castShadow": true,
-            "src": "./models/griffindorOpt.glb",
+            "src": "./models/church.glb",
             "textureCompression": "ktx2"
         },
         {
             "type": "mesh",
+            "ignored": true,
             "rawShaderMaterial": {
                 "vertexShader":"./shaders/cubeVertShader.glsl",
                 "fragmentShader":"./shaders/cubeFragShader.glsl"

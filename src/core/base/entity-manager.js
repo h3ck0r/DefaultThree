@@ -39,6 +39,14 @@ export class EntityManager {
         const { value, done } = iterator.next();
         return done ? null : value;
     }
+    getFistComponent(componentType) {
+        const components = this.componentsByType.get(componentType);
+        if (!components) return null;
+
+        const iterator = components.values();
+        const { value, done } = iterator.next();
+        return done ? null : value;
+    }
 
     getEntitiesWithComponents(...componentTypes) {
         const sets = componentTypes.map(type => this.componentsByType.get(type) || new Set());

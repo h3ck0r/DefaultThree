@@ -3,10 +3,10 @@ import { MovementComponent } from "../components/movement-component";
 
 export class MovementSystem {
     update(em, deltaTime) {
-        const entities = em.getEntitiesWithComponents(TransformComponent, MovementComponent);
+        // const entities = em.getEntitiesWithComponents(TransformComponent, MovementComponent);
 
-        for (const entity of entities) {
+        // for (const entity of entities) {
          
-        }
+        // }
     }
 }
